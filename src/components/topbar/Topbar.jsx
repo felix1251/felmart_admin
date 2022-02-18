@@ -1,27 +1,21 @@
 import React from "react";
 import "./topbar.css";
-import { AccountCircle, SupervisorAccount } from "@material-ui/icons";
-import { useDispatch, useSelector } from "react-redux";
-import { Button } from "@material-ui/core";
+import { AccountCircle, SupervisorAccount, Notifications } from "@material-ui/icons";
+import { useDispatch } from "react-redux";
+import { Button, Badge } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import { logout } from "../../redux/userRedux";
-import { clearOnLogout } from "../../redux/productRedux";
 
-
-export default function Topbar() {
-  const user = useSelector((state) => state.user.currentUser);
+export default function Topbar({ notif, user}) {
   const dispatch = useDispatch()
   const history = useHistory()
 
   const handleLogout = () => {
     localStorage.clear()
     dispatch(logout())
-    dispatch(clearOnLogout())
     history.push("/login")
-    window.location.reload()
   }
 
-  // console.log(user)
   return (
     <div className="topbar">
       <div className="topbarWrapper">
@@ -30,9 +24,23 @@ export default function Topbar() {
           <span className="logo">Felmart PH Admin</span>
         </div>
         <div className="topRight">
+          <div className="notifications">
+            {notif.map((n, key) => (
+              <div key={key} className="notification">{n.senderName} has ordered</div>
+            ))}
+          </div>
+          <div className="topbarIconContainer">
+            <Badge badgeContent={notif.length} anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right',
+            }} color="primary">
+              <Notifications color="action" />
+            </Badge>
+          </div>
           <div className="topbarIconContainer">
             <AccountCircle />
-          </div><div className="username">
+          </div>
+          <div className="username">
             {user.username} ({user.email})
           </div>
           <Button

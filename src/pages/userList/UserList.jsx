@@ -19,7 +19,6 @@ export default function UserList() {
   const handleDelete = (id) => {
     deleteUser(id, dispatch);
   };
-
   const columns = [
     { field: "_id", headerName: "ID", width: 230 },
     {

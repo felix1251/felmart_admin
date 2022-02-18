@@ -65,11 +65,6 @@ export const productSlice = createSlice({
       state.isFetching = false;
       state.error = true;
     },
-    clearOnLogout: (state) => {
-      state.products = [];
-      state.isFetching = false;
-      state.error =false;
-    }
   },
 });
 

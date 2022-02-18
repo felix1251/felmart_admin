@@ -10,7 +10,7 @@ import moment from "moment"
 export default function OrderList() {
     const dispatch = useDispatch();
     const orders = useSelector((state) => state.order.orders);
-    console.log(orders)
+    // console.log(orders)
     useEffect(() => {
         getOrders(dispatch);
     }, [dispatch]);

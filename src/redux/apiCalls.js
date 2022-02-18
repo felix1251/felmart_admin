@@ -14,7 +14,7 @@ import {
   addProductStart,
   addProductSuccess,
 } from "./productRedux";
-import { addUserFailure, addUserStart, addUserSuccess, getUserFailure, getUserStart, getUserSuccess, updateUserFailure, updateUserStart, updateUseruccess } from "./userlistRedux";
+import { addUserFailure, addUserStart, addUserSuccess, deleteUserFailure, deleteUserSuccess, getUserFailure, getUserStart, getUserSuccess, updateUserFailure, updateUserStart, updateUseruccess } from "./userlistRedux";
 import { addOrderFailure, addOrderStart, addOrderSuccess, deleteOrderFailure, deleteOrderStart, deleteOrderSuccess, getOrderFailure, getOrderStart, getOrderSuccess, updateOrderFailure, updateOrderStart, updateOrderSuccess } from "./orderRedux";
 
 export const login = async (dispatch, user) => {
@@ -84,9 +84,9 @@ export const deleteUser = async (id, dispatch) => {
   dispatch(deleteProductStart());
   try {
     await userRequest.delete(`/users/${id}`);
-    dispatch(deleteProductSuccess(id));
+    dispatch(deleteUserSuccess(id));
   } catch (err) {
-    dispatch(deleteProductFailure());
+    dispatch(deleteUserFailure());
   }
 };
 //UPDATE USER

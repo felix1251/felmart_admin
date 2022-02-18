@@ -65,11 +65,6 @@ export const orderSlice = createSlice({
       state.isFetching = false;
       state.error = true;
     },
-    clearOnLogoutOrder: (state) => {
-      state.orders = [];
-      state.isFetching = false;
-      state.error =false;
-    }
   },
 });
 

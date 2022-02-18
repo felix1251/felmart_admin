@@ -65,11 +65,6 @@ export const Userlice = createSlice({
       state.isFetching = false;
       state.error = true;
     },
-    clearOnLogout: (state) => {
-      state.users = [];
-      state.isFetching = false;
-      state.error = false;
-    },
   },
 });
 

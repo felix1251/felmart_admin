@@ -6,6 +6,7 @@
   top: 0;
   justify-content: center;
   z-index: 999;
+  
 }
 
 .username {
@@ -14,6 +15,23 @@
   margin-right: 5px;
   color: #555;
   margin-right: 10px;
+}
+
+.notifications {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  background-color: white;
+  color: black;
+  font-weight: 300;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.notification {
+  padding: 5px;
+  
 }
 
 .topbarWrapper {
@@ -48,6 +66,7 @@
   margin-right: 10px;
   color: #555;
 }
+
 
 .topIconBadge{
     width: 15px;
