@@ -2,7 +2,7 @@ import "./orderList.css";
 import { DataGrid } from "@material-ui/data-grid";
 import { DeleteOutline } from "@material-ui/icons";
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteOrder, getOrders } from "../../redux/apiCalls";
 import moment from "moment"
@@ -10,7 +10,7 @@ import moment from "moment"
 export default function OrderList() {
     const dispatch = useDispatch();
     const orders = useSelector((state) => state.order.orders);
-    // console.log(orders)
+  
     useEffect(() => {
         getOrders(dispatch);
     }, [dispatch]);
@@ -20,7 +20,7 @@ export default function OrderList() {
     };
 
     const columns = [
-        { field: "userId", headerName: "Person", width: 230 },
+        { field: "userId", headerName: "Person", width: 200 },
         {
             field: "createdAt",
             headerName: "Date of order",
@@ -28,7 +28,7 @@ export default function OrderList() {
             renderCell: (params) => {
                 return (
                     <div>
-                        {moment(params.row.createdAt).format("llll") }
+                        {moment(params.row.createdAt).format("llll")}
                     </div>
                 );
             },
@@ -59,10 +59,10 @@ export default function OrderList() {
                 return (
                     <>
                         <Link to={"/order/" + params.row._id}>
-                            <button className="productListEdit">Edit</button>
+                            <button className="orderListEdit">View</button>
                         </Link>
                         <DeleteOutline
-                            className="productListDelete"
+                            className="orderListDelete"
                             onClick={() => handleDelete(params.row._id)}
                         />
                     </>
@@ -72,7 +72,7 @@ export default function OrderList() {
     ];
 
     return (
-        <div className="productList">
+        <div className="orderList">
             <DataGrid
                 rows={orders}
                 disableSelectionOnClick

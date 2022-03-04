@@ -4,13 +4,15 @@ import { initializeApp } from "firebase/app";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyCB-h_T2ZL-a7xt5zMvZmSh8GBXtawzL0c",
-  authDomain: "shop-889c6.firebaseapp.com",
-  projectId: "shop-889c6",
-  storageBucket: "shop-889c6.appspot.com",
-  messagingSenderId: "105110075028",
-  appId: "1:105110075028:web:7cee5adf1ed39f597e6681",
+  apiKey: "AIzaSyC_z-JQjwHWrVsB2s31zz14MUOFurpmoNA",
+  authDomain: "felmart-storage.firebaseapp.com",
+  projectId: "felmart-storage",
+  storageBucket: "felmart-storage.appspot.com",
+  messagingSenderId: "1043441228398",
+  appId: "1:1043441228398:web:f634e19b02f7a53de4647f",
+  // measurementId: "G-F5N0L866Q8"
 };
 
 // Initialize Firebase

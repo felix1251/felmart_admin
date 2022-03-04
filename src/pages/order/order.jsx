@@ -7,16 +7,20 @@ import {
   PhoneAndroid,
   AttachMoney,
   Payment,
+  AccessTime,
+  Timelapse
 } from "@material-ui/icons";
 import "./order.css";
+import moment from "moment"
 
 const Order = () => {
   const location = useLocation()
   const orderId = location.pathname.split("/")[2];
+  
   const order = useSelector((state) =>
     state.order.orders.find((order) => order._id === orderId)
   );
-  console.log(orderId, order)
+
   return (
     <div className="user">
       <div className="userTitleContainer">
@@ -26,33 +30,38 @@ const Order = () => {
         <div className="userShow">
           <div className="userShowTop">
             <div className="userShowTopTitle">
-              <span className="userShowUsername">Oder Id: {order._id}</span>
+              <span className="userShowUsername">Oder Id: {order?._id}</span>
             </div>
           </div>
           <div className="userShowBottom">
             <span className="userShowTitle">Order Details</span>
             <div className="userShowInfo">
               <AccountCircle className="userShowIcon" />
-              <span className="userShowInfoTitle"><b>Person:</b> {order.userId}</span>
+              <span className="userShowInfoTitle"><b>Person:</b> {order?.userId}</span>
             </div>
             <div className="userShowInfo">
               <AttachMoney className="userShowIcon" />
-              <span className="userShowInfoTitle"><b>Amount: </b> ₱ {order.amount}</span>
+              <span className="userShowInfoTitle"><b>Amount: </b> ₱ {order?.amount}</span>
             </div>
             <div className="userShowInfo">
               <PhoneAndroid className="userShowIcon" />
-              <span className="userShowInfoTitle"><b>Mobile No:</b> {order.mobileNo}</span>
+              <span className="userShowInfoTitle"><b>Mobile No:</b> {order?.mobileNo}</span>
             </div>
             <div className="userShowInfo">
               <Payment className="userShowIcon" />
-              <span className="userShowInfoTitle"><b>Payment Type:</b> {order.paymentType}</span>
+              <span className="userShowInfoTitle"><b>Payment Type:</b> {order?.paymentType}</span>
             </div>
             <div className="userShowInfo">
               <LocationSearching className="userShowIcon" />
-              <span className="userShowInfoTitle"><b>Adress:</b> {order.address}</span>
+              <span className="userShowInfoTitle"><b>Address:</b> {order?.address}</span>
             </div>
             <div className="userShowInfo">
-              <span className="userShowInfoTitle"><b>Status:</b> {order.status}</span>
+            <AccessTime className="userShowIcon" />
+              <span className="userShowInfoTitle"><b>Ordered At:</b> {moment(order?.createdAt).format('llll')}</span>
+            </div>
+            <div className="userShowInfo">
+            <Timelapse className="userShowIcon" />
+              <span className="userShowInfoTitle"><b>Status:</b> {order?.status}</span>
             </div>
           </div>
         </div>

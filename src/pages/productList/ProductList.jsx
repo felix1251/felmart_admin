@@ -9,7 +9,6 @@ import { deleteProduct, getProducts } from "../../redux/apiCalls";
 export default function ProductList() {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.product.products);
-  //  console.log(products)
   useEffect(() => {
     getProducts(dispatch);
   }, [dispatch]);
@@ -27,13 +26,13 @@ export default function ProductList() {
       renderCell: (params) => {
         return (
           <div className="productListItem">
-            <img className="productListImg" src={params.row.img} alt="" />
+            <img className="productListImg" src={params.row.img[0].imgURL} alt="" />
             {params.row.title}
           </div>
         );
       },
     },
-    { field: "inStock", headerName: "Stock", width: 200 },
+    { field: "inStock", headerName: "Stock", width: 130 },
     {
       field: "price",
       headerName: "Price",
@@ -63,6 +62,11 @@ export default function ProductList() {
           </>
         );
       },
+    },
+    {
+      field: "Link", headerName: <Link to="/newproduct">
+        <button className="productAddButton2">Create product</button>
+      </Link>, width: 280
     },
   ];
 

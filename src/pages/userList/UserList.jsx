@@ -10,27 +10,26 @@ import { deleteUser, getUsers } from "../../redux/apiCalls";
 export default function UserList() {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.userlist.users);
-
+  
   useEffect(() => {
     getUsers(dispatch);
   }, [dispatch]);
 
-  // console.log(users)
   const handleDelete = (id) => {
     deleteUser(id, dispatch);
   };
   const columns = [
-    { field: "_id", headerName: "ID", width: 230 },
+    { field: "_id", headerName: "Id", width: 200 },
     {
       field: "username",
       headerName: "Username",
-      width: 200
+      width: 150
     },
     { field: "email", headerName: "Email", width: 200 },
     {
       field: "isAdmin",
       headerName: "Admin",
-      width: 120,
+      width: 200,
     },
     {
       field: "action",

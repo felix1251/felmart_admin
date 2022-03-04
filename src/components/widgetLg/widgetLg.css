@@ -13,7 +13,7 @@
 
 .widgetLgTable{
   width: 100%;
-  border-spacing: 20px;
+  border-spacing: 15px;
 }
 
 .widgetLgTh{
@@ -43,6 +43,7 @@
   border: none;
   border-radius: 10px;
 }
+
 
 .widgetLgButton.approved{
     background-color: #ffffff;

@@ -1,8 +1,9 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import userReducer from "./userRedux";
 import productReducer from "./productRedux";
 import userlistRedux from "./userlistRedux";
 import orderRedux from "./orderRedux";
+import incomeRedux from "./incomeRedux";
 import {
   persistStore,
   persistReducer,
@@ -14,24 +15,29 @@ import {
   REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import notificationRedux from "./notificationRedux";
+import createProductRedux  from "./createProductRedux";
 
 const persistConfig = {
   key: "root",
   version: 1,
+  blacklist: ["userlist"],
   storage,
 };
 
-// const rootReducer = combineReducers({
-//   user: userReducer,
-//   product: productReducer,
-//   userlist: userlistRedux,
-//   order: orderRedux,
-// });
+const rootReducer = combineReducers({
+  user: userReducer,
+  product: productReducer,
+  userlist: userlistRedux,
+  order: orderRedux,
+  income: incomeRedux,
+  notification: notificationRedux,
+  create: createProductRedux,
+});
 
-const persistedReducer = persistReducer(persistConfig, userReducer);
-
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 export const store = configureStore({
-  reducer: { user: persistedReducer, product: productReducer, userlist: userlistRedux, order: orderRedux },
+  reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {

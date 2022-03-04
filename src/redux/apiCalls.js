@@ -14,16 +14,49 @@ import {
   addProductStart,
   addProductSuccess,
 } from "./productRedux";
-import { addUserFailure, addUserStart, addUserSuccess, deleteUserFailure, deleteUserSuccess, getUserFailure, getUserStart, getUserSuccess, updateUserFailure, updateUserStart, updateUseruccess } from "./userlistRedux";
-import { addOrderFailure, addOrderStart, addOrderSuccess, deleteOrderFailure, deleteOrderStart, deleteOrderSuccess, getOrderFailure, getOrderStart, getOrderSuccess, updateOrderFailure, updateOrderStart, updateOrderSuccess } from "./orderRedux";
+import {
+  addUserFailure,
+  addUserStart,
+  addUserSuccess,
+  deleteUserFailure,
+  deleteUserSuccess,
+  getUserFailure,
+  getUserStart,
+  getUserSuccess,
+  updateUserFailure,
+  updateUserStart,
+  updateUseruccess,
+} from "./userlistRedux";
+import {
+  addOrderFailure,
+  addOrderStart,
+  addOrderSuccess,
+  deleteOrderFailure,
+  deleteOrderStart,
+  deleteOrderSuccess,
+  getOrderFailure,
+  getOrderStart,
+  getOrderSuccess,
+  updateOrderFailure,
+  updateOrderStart,
+  updateOrderSuccess,
+} from "./orderRedux";
+import {
+  getIncomeStart,
+  getIncomeSuccess,
+  getIncomeFailure,
+  getPerc,
+} from "./incomeRedux";
+import { notify } from "../components/notify/toast";
 
 export const login = async (dispatch, user) => {
   dispatch(loginStart());
   try {
     const res = await publicRequest.post("/auth/login", user);
     dispatch(loginSuccess(res.data));
-    window.location = "/"
+    window.location = "/";
   } catch (err) {
+    notify(false, `Failed login | ${err}`);
     dispatch(loginFailure());
   }
 };
@@ -44,8 +77,10 @@ export const deleteProduct = async (id, dispatch) => {
   try {
     await userRequest.delete(`/products/${id}`);
     dispatch(deleteProductSuccess(id));
+    notify(true, "Product deleted successfully");
   } catch (err) {
     dispatch(deleteProductFailure());
+    notify(false, "Product delete failed | Internal server error");
   }
 };
 //UPDATE PRODUCT
@@ -54,18 +89,23 @@ export const updateProduct = async (id, product, dispatch) => {
   try {
     await userRequest.put(`/products/${id}`, product);
     dispatch(updateProductSuccess({ id, product }));
+    notify(true, "Product updated succesfully");
   } catch (err) {
     dispatch(updateProductFailure());
+    notify(false, "Product update failed | Interna; server error");
   }
 };
 //ADD PRODUCT
-export const addProduct = async (product, dispatch) => {
+export const addProduct = async (product, dispatch, history) => {
   dispatch(addProductStart());
   try {
     const res = await userRequest.post(`/products`, product);
     dispatch(addProductSuccess(res.data));
+    history.push(`/product/${res.data._id}`);
+    notify(true, "Product successfully created");
   } catch (err) {
     dispatch(addProductFailure());
+    notify(false, "Adding product failed | Internal server error");
   }
 };
 //-------------------------------------------------------------------
@@ -90,11 +130,11 @@ export const deleteUser = async (id, dispatch) => {
   }
 };
 //UPDATE USER
-export const updateUser = async (id, order, dispatch) => {
+export const updateUser = async (id, details, dispatch) => {
   dispatch(updateUserStart());
   try {
-    await userRequest.put(`/users/${id}`, order);
-    dispatch(updateUseruccess({ id, order }));
+    await userRequest.put(`/users/${id}`, details);
+    dispatch(updateUseruccess({ id, details }));
   } catch (err) {
     dispatch(updateUserFailure());
   }
@@ -148,5 +188,18 @@ export const addOrder = async (order, dispatch) => {
     dispatch(addOrderSuccess(res.data));
   } catch (err) {
     dispatch(addOrderFailure());
+  }
+};
+
+//-------------------------------------------------------
+//GET INCOME
+export const getIncome = async (dispatch) => {
+  dispatch(getIncomeStart());
+  try {
+    const res = await userRequest.get("/orders/income");
+    dispatch(getIncomeSuccess(res.data));
+    dispatch(getPerc());
+  } catch (err) {
+    dispatch(getIncomeFailure());
   }
 };

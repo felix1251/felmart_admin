@@ -1,19 +1,13 @@
 import Chart from "../../components/chart/Chart";
 import FeaturedInfo from "../../components/featuredInfo/FeaturedInfo";
 import "./home.css";
-// import { userData } from "../../dummyData";
-// import WidgetSm from "../../components/widgetSm/WidgetSm";
 import WidgetLg from "../../components/widgetLg/WidgetLg";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { userRequest } from "../../requestMethods";
-// import { useSelector } from "react-redux";
 
-export default function Home() {
+export default function Home({ socket }) {
   const [orderStats, setOrderStats] = useState([]);
-  
-
-  // const error = useSelector(state => state.user.error)
-  // console.log(error)
+  const [income, setIncome] = useState([])
 
   const MONTHS = useMemo(
     () => [
@@ -33,30 +27,43 @@ export default function Home() {
     []
   );
 
+  const fetchData = useCallback(async() => {
+    const res = await userRequest.get("/orders/income");
+    const list = res.data.sort((a, b) => {
+      return a._id - b._id
+    })
+    list.map((item) =>
+      setOrderStats((prev) => [
+        ...prev,
+        { name: MONTHS[item._id - 1], "sales": item.total },
+      ])
+    );
+    setIncome(res.data)
+  }, [MONTHS])
+
   useEffect(() => {
     const getStats = async () => {
       try {
-        const res = await userRequest.get("/orders/income");
-        res.data.map((item) =>
-          setOrderStats((prev) => [
-            ...prev,
-            { name: MONTHS[item._id - 1], "Sales ( ₱ )": item.total },
-          ])
-        );
+        fetchData()
       } catch { }
     };
     getStats();
-  }, [MONTHS]);
+  }, [fetchData]);
 
+  useEffect(() => {
+    socket?.on("getNotification", () => {
+      fetchData()
+    });
+  }, [socket, fetchData]);
 
   return (
     <div className="home" >
-      <FeaturedInfo />
+      <FeaturedInfo income={income} />
       <Chart
         data={orderStats}
         title="Sales Analytics"
         grid
-        dataKey={{ sale: "Sales ( ₱ )", order: "Orders" }}
+        dataKey="sales"
       />
       <div className="homeWidgets">
         <WidgetLg />

@@ -1,18 +1,19 @@
-import { useEffect } from "react";
+// import { useEffect } from "react";
 import "./widgetLg.css";
 import { format } from "timeago.js"
 import { useDispatch, useSelector } from "react-redux";
 import { getOrders } from "../../redux/apiCalls";
+import { useEffect } from "react";
 
 export default function WidgetLg() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   const orders = useSelector((state) => state.order.orders).slice().reverse()
   const limit = orders.slice(0,5)
 
   useEffect(() => {
-    getOrders(dispatch);
-  }, [dispatch]);;
-
+   getOrders(dispatch)
+  }, [dispatch])
+  
   const Button = ({ type }) => {
     return <button className={"widgetLgButton " + type}>{type}</button>;
   };

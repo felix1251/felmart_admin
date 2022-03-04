@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import "./product.css";
 import Chart from "../../components/chart/Chart";
 // import { productData } from "../../dummyData";
@@ -9,6 +9,7 @@ import { userRequest } from "../../requestMethods";
 
 export default function Product() {
   const location = useLocation();
+  const [totalOrders, setTotalOrders] = useState(0)
   const productId = location.pathname.split("/")[2];
   const [pStats, setPStats] = useState([]);
 
@@ -38,15 +39,16 @@ export default function Product() {
     const getStats = async () => {
       try {
         const res = await userRequest.get("orders/income?pid=" + productId);
-        const list = res.data.sort((a,b)=>{
-            return a._id - b._id
+        const list = res.data.sort((a, b) => {
+          return a._id - b._id
         })
         list.map((item) =>
           setPStats((prev) => [
             ...prev,
-            { name: MONTHS[item._id - 1], Sales: item.total },
+            { name: MONTHS[item._id - 1], "sales": item.total },
           ])
         );
+        setTotalOrders(res.data[0]?.totalCount)
       } catch (err) {
         console.log(err);
       }
@@ -58,31 +60,32 @@ export default function Product() {
     <div className="product">
       <div className="productTitleContainer">
         <h1 className="productTitle">Product</h1>
-        <Link to="/newproduct">
-          <button className="productAddButton">Create</button>
-        </Link>
       </div>
       <div className="productTop">
         <div className="productTopLeft">
-          <Chart data={pStats} dataKey="Sales" title="Sales Performance" />
+          <Chart data={pStats} dataKey="sales" grid title="Sales Performance" />
         </div>
         <div className="productTopRight">
           <div className="productInfoTop">
-            <img src={product.img} alt="" className="productInfoImg" />
-            <span className="productName">{product.title}</span>
+            <img src={product?.img[0].imgURL} alt="" className="productInfoImg" />
+            <span className="productName">{product?.title}</span>
           </div>
           <div className="productInfoBottom">
             <div className="productInfoItem">
               <span className="productInfoKey">id:</span>
-              <span className="productInfoValue">{product._id}</span>
+              <span className="productInfoValue">{product?._id}</span>
             </div>
             <div className="productInfoItem">
               <span className="productInfoKey">sales:</span>
-              <span className="productInfoValue">5123</span>
+              <span className="productInfoValue">{pStats[0]?.sales ? pStats[0]?.sales : "0"}</span>
+            </div>
+            <div className="productInfoItem">
+              <span className="productInfoKey">Total Orders:</span>
+              <span className="productInfoValue">{totalOrders ? totalOrders : 0}</span>
             </div>
             <div className="productInfoItem">
               <span className="productInfoKey">in stock:</span>
-              <span className="productInfoValue">{product.inStock}</span>
+              <span className="productInfoValue">{product?.inStock ? "Yes" : "No"}</span>
             </div>
           </div>
         </div>
@@ -91,11 +94,11 @@ export default function Product() {
         <form className="productForm">
           <div className="productFormLeft">
             <label>Product Name</label>
-            <input type="text" placeholder={product.title} />
+            <input type="text" placeholder={product?.title} />
             <label>Product Description</label>
-            <input type="text" placeholder={product.desc} />
+            <input type="text" placeholder={product?.desc} />
             <label>Price</label>
-            <input type="text" placeholder={product.price} />
+            <input type="text" placeholder={product?.price} />
             <label>In Stock</label>
             <select name="inStock" id="idStock">
               <option value="true">Yes</option>
@@ -104,7 +107,7 @@ export default function Product() {
           </div>
           <div className="productFormRight">
             <div className="productUpload">
-              <img src={product.img} alt="" className="productUploadImg" />
+              <img src={product?.img[0].imgURL} alt="" className="productUploadImg" />
               <label htmlFor="file">
                 <Publish />
               </label>
